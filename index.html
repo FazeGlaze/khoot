@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leaflet Map</title>
+<!-- Load Leaflet from CDN -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<!-- Load Leaflet.markercluster from CDN -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+<script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+<!-- Define CSS styles for the map container -->
+<style>
+    #map {
+        height: 100vh;
+        width: 100%;
+    }
+    
+    .leaflet-popup-content-wrapper {
+        width: 350px; /* Set the width of the popup wrapper */
+        height: 200px; /* Set the height of the popup wrapper */
+    }
+    
+    .leaflet-popup-content {
+        width: 100%; /* Ensure the content fills the wrapper */
+        height: 100%; /* Ensure the content fills the wrapper */
+    }
+    
+    .custom-popup img {
+        max-width: 100%; /* Ensure the image fits within the container */
+        max-height: 100%; /* Ensure the image fits within the container */
+    }
+</style>
+
+</head>
+<body>
+<!-- Map container -->
+<div id="map"></div>
+<!-- JavaScript to initialize the map -->
+<script>
+    // Define map options
+    let mapOptions = {
+        center: [33.385, -111.952201], // Latitude and Longitude of the center
+        zoom: 10 // Initial zoom level
+    };
+
+    // Create a new Leaflet map instance with the specified options
+    let map = new L.map('map', mapOptions);
+
+    // Create a new tile layer using OpenStreetMap tiles
+    let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+
+    // Add the tile layer to the map
+    map.addLayer(layer);
+
+    // Function to initialize map markers
+    function initializeMarkers() {
+        // Define custom icon for markers
+        let customIcon = L.icon({
+            iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            tooltipAnchor: [16, -28],
+            shadowSize: [41, 41]
+        });
+
+        // Initialize marker cluster group
+        let markers = L.markerClusterGroup();
+
+        // Loop through cameras and add markers
+        cameras.forEach(camera => {
+            // Create a marker with custom icon at the specified coordinates
+            let marker = L.marker([camera.latitude, camera.longitude], { icon: customIcon });
+            
+            // Add click event listener to the marker
+            marker.on('click', function(e) {
+                // Get the camera ID
+                let cameraId = camera.id;
+
+                // Fetch the image URL based on the camera ID
+                let imageUrl = `http://az511.com/map/Cctv/${cameraId}`;
+                //let imageUrl = `http://vods.az511.com/adot_${cameraId}.jpg`;
+                // Create a custom popup with the image preview
+                let popupContent = `<div class="custom-popup"><img src="${imageUrl}" alt="Camera Preview"></div>`;
+                // Set the popup content
+                marker.bindPopup(popupContent).openPopup();
+            });
+
+            // Add the marker to the marker cluster group
+            markers.addLayer(marker);
+        });
+
+        // Add marker cluster group to the map
+        map.addLayer(markers);
+    }
+
+    // Include the cameras data from external file
+    let camerasScript = document.createElement('script');
+    camerasScript.src = 'cameras.js';
+    camerasScript.onload = function() {
+        // After the script is loaded, initialize the map markers
+        initializeMarkers();
+    };
+    document.head.appendChild(camerasScript);
+</script>
+
+</body>
+</html>

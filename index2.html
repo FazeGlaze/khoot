@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leaflet Map</title>
+<!-- Load Leaflet from CDN -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<!-- Load Leaflet.markercluster from CDN -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+<script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+<!-- Define CSS styles for the map container -->
+<style>
+    #map {
+        height: 100vh;
+        width: 100%;
+    }
+    
+    .leaflet-popup-content-wrapper {
+        width: 350px; /* Set the width of the popup wrapper */
+        height: 200px; /* Set the height of the popup wrapper */
+    }
+    
+    .leaflet-popup-content {
+        width: 100%; /* Ensure the content fills the wrapper */
+        height: 100%; /* Ensure the content fills the wrapper */
+    }
+    
+    .custom-popup img {
+        max-width: 100%; /* Ensure the image fits within the container */
+        max-height: 100%; /* Ensure the image fits within the container */
+    }
+</style>
+
+</head>
+<body>
+<!-- Map container -->
+<div id="map"></div>
+<!-- JavaScript to initialize the map -->
+<script>
+    // Define map options
+    let mapOptions = {
+        center: [33.385, -111.952201], // Latitude and Longitude of the center
+        zoom: 10 // Initial zoom level
+    };
+
+    // Create a new Leaflet map instance with the specified options
+    let map = new L.map('map', mapOptions);
+
+    // Create a new tile layer using OpenStreetMap tiles
+    let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+
+    // Add the tile layer to the map
+    map.addLayer(layer);
+
+    // Parse JSON data
+    let cameras = [
+    
+{
+    "cameraId": "546",
+    "agencyId": 15,
+    "organizationCenterId": "AZDOT",
+    "id": "546--15",
+    "agencyName": "DMS",
+    "roadway": "US-60",
+    "direction": "Eastbound",
+    "isMyCamera": false,
+    "description1": "US-60 EB 172.09 @West of Mill Avenue",
+    "description2": "US-60 @ 172.09",
+    "description3": "N/A",
+    "description4": "N/A",
+    "refreshRateMs": 30000,
+    "displayName": "US-60 EB 172.09 @West of Mill Avenue",
+    "isUserCamera": false,
+    "organizationId": "DMS",
+    "latitude": 33.385,
+    "longitude": -111.952201,
+    "isVideoAuthRequired": false,
+    "videoDisabled": false,
+    "displayCamera": true,
+    "blocked": false,
+    "defaultCamera": false,
+    "sortId": 0,
+    "cityName": "Phoenix",
+    "roadNumber": 172.09
+},
+{
+    "cameraId": "161",
+    "agencyId": 14,
+    "organizationCenterId": "AZDOT",
+    "id": "161--14",
+    "agencyName": "VOD",
+    "roadway": "I-10",
+    "direction": "Eastbound",
+    "isMyCamera": false,
+    "description1": "I-10 EB 138.10 @E of 67th Ave",
+    "description2": "I-10 @ 138.1",
+    "description3": "N/A",
+    "description4": "N/A",
+    "refreshRateMs": 30000,
+    "displayName": "I-10 EB 138.10 @E of 67th Ave",
+    "isUserCamera": false,
+    "organizationId": "VOD",
+    "latitude": 33.4622460300001,
+    "longitude": -112.1952825,
+    "isVideoAuthRequired": false,
+    "videoDisabled": false,
+    "displayCamera": true,
+    "blocked": false,
+    "defaultCamera": false,
+    "sortId": 0,
+    "cityName": "Phoenix ",
+    "roadNumber": 138.1
+},
+{
+    "cameraId": "144",
+    "agencyId": 14,
+    "organizationCenterId": "AZDOT",
+    "id": "144--14",
+    "agencyName": "VOD",
+    "roadway": "I-10",
+    "direction": "Westbound",
+    "isMyCamera": false,
+    "description1": "I-10 WB 123.60 @Citrus Rd",
+    "description2": "I-10 @ 123.6",
+    "description3": "N/A",
+    "description4": "N/A",
+    "refreshRateMs": 30000,
+    "displayName": "I-10 WB 123.60 @Citrus Rd",
+    "isUserCamera": false,
+    "organizationId": "VOD",
+    "latitude": 33.46176861,
+    "longitude": -112.4444879,
+    "isVideoAuthRequired": false,
+    "videoDisabled": false,
+    "displayCamera": true,
+    "blocked": false,
+    "defaultCamera": false,
+    "sortId": 0,
+    "cityName": "Phoenix ",
+    "roadNumber": 123.6
+},
+{
+    "cameraId": "310",
+    "agencyId": 14,
+    "organizationCenterId": "AZDOT",
+    "id": "310--14",
+    "agencyName": "VOD",
+    "roadway": "US-60",
+    "direction": "Eastbound",
+    "isMyCamera": false,
+    "description1": "US-60 EB 178.00 @E of Dobson Rd",
+    "description2": "US-60 @ 178",
+    "description3": "N/A",
+    "description4": "N/A",
+    "refreshRateMs": 30000,
+    "displayName": "US-60 EB 178.00 @E of Dobson Rd",
+    "isUserCamera": false,
+    "organizationId": "VOD",
+    "latitude": 33.38525794,
+    "longitude": -111.8632392,
+    "isVideoAuthRequired": false,
+    "videoDisabled": false,
+    "displayCamera": true,
+    "blocked": false,
+    "defaultCamera": false,
+    "sortId": 0,
+    "cityName": "Phoenix ",
+    "roadNumber": 178.0
+},
+{
+    "cameraId": "54",
+    "agencyId": 15,
+    "organizationCenterId": "AZDOT",
+    "id": "54--15",
+    "agencyName": "DMS",
+    "roadway": "SR-87",
+    "direction": "Southbound",
+    "isMyCamera": false,
+    "description1": "SR-87 SB  339.90 @Winslow",
+    "description2": "SR-87 @ 339.9",
+    "description3": "N/A",
+    "description4": "N/A",
+    "refreshRateMs": 30000,
+    "displayName": "SR-87 SB  339.90 @Winslow",
+    "isUserCamera": false,
+    "organizationId": "DMS",
+    "latitude": 34.9924600000001,
+    "longitude": -110.719542,
+    "isVideoAuthRequired": false,
+    "videoDisabled": false,
+    "displayCamera": true,
+    "blocked": false,
+    "defaultCamera": false,
+    "sortId": 0,
+    "cityName": "Holbrook ",
+    "roadNumber": 339.9
+}
+
+];
+
+
+
+    // Define custom icon for markers
+    let customIcon = L.icon({
+        iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        tooltipAnchor: [16, -28],
+        shadowSize: [41, 41]
+    });
+
+    // Initialize marker cluster group
+    let markers = L.markerClusterGroup();
+
+    // Loop through cameras and add markers
+    cameras.forEach(camera => {
+        // Create a marker with custom icon at the specified coordinates
+        let marker = L.marker([camera.latitude, camera.longitude], { icon: customIcon });
+        
+        // Add click event listener to the marker
+        marker.on('click', function(e) {
+            // Get the camera ID
+            let cameraId = camera.id;
+
+            // Fetch the image URL based on the camera ID
+            let imageUrl = `http://az511.com/map/Cctv/${cameraId}`;
+            //let imageUrl = `http://vods.az511.com/adot_${cameraId}.jpg`;
+            // Create a custom popup with the image preview
+            let popupContent = `<div class="custom-popup"><img src="${imageUrl}" alt="Camera Preview"></div>`;
+            // Set the popup content
+            marker.bindPopup(popupContent);
+        });
+
+        // Add the marker to the marker cluster group
+        markers.addLayer(marker);
+    });
+
+    // Add marker cluster group to the map
+    map.addLayer(markers);
+</script>
+
+</body>
+</html>
