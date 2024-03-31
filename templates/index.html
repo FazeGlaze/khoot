@@ -1,0 +1,23 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object Detection</title>
+    <script type="text/javascript">
+        function submitForm() {
+            setTimeout(function() {
+                document.getElementById("detect_form").submit();
+            }, 2000); // 2 seconds delay
+        }
+    </script>
+</head>
+<body onload="submitForm()">
+    <h1>Object Detection</h1>
+    <form id="detect_form" action="/detect" method="post">
+        <label for="image_url">Image URL:</label><br>
+        <input type="text" id="image_url" name="image_url" value="{{ default_image_url }}"><br><br>
+    </form>
+</body>
+</html>
